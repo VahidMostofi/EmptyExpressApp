@@ -1,6 +1,7 @@
 import { Container } from 'typedi';
 import mongoose from 'mongoose';
 import { IUser } from '../../interfaces/IUser';
+import { Logger } from 'winston';
 
 /**
  * Attach user to req.currentUser
@@ -10,7 +11,7 @@ import { IUser } from '../../interfaces/IUser';
  */
 const attachCurrentUser = async (req, res, next) => {
   //TODO: this whole thing needs to be changed! we store the profileId in JWT, and extract it  without talking to db!
-  const Logger = Container.get('logger');
+  const Logger = Container.get<Logger>('logger');
   try {
     const UserModel = Container.get('userModel') as mongoose.Model<IUser & mongoose.Document>;
     const userRecord = await UserModel.findById(req.token._id);
